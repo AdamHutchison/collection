@@ -36,3 +36,21 @@ func (c *Collection[T]) Shuffle() T {
 func (c *Collection[T]) Count() int {
 	return len(c.set)
 }
+
+// Allows the filtering of a collection using a defined function
+// The function passed to Filter should accept a value of type T and return a bool
+// if the function returns true, the value will be kept in the collection
+// if the function returns false, the value will be removed
+func (c *Collection[T]) Filter(fn func(item T) bool) *Collection[T] {
+	newCollection := &Collection[T]{
+		set: []T{},
+	}
+
+	for _, item := range c.set {
+		if fn(item) {
+			newCollection.Append(item)
+		}
+	}
+
+	return newCollection
+}

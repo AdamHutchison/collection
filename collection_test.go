@@ -61,8 +61,8 @@ func TestCanPopItemFromCollection(t *testing.T) {
 }
 
 func TestCanSuffleCollection(t *testing.T) {
-	c := Collection[int] {
-		set: []int{1,2,3,4,5},
+	c := Collection[int]{
+		set: []int{1, 2, 3, 4, 5},
 	}
 
 	got := c.Shuffle()
@@ -99,5 +99,21 @@ func TestCanCountCollection(t *testing.T) {
 
 	if want != got {
 		t.Errorf("Wanted: %v, Got: %v", want, got)
+	}
+}
+
+func TestCanFilterCollection(t *testing.T) {
+	c := Collection[int]{
+		set: []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+	}
+
+	want := []int{6, 7, 8, 9}
+
+	got := c.Filter(func(item int) bool {
+		return item > 5
+	}).All()
+
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("Failed asserting that collection was filtered correctly. Wanted: %v, Got %v", want, got)
 	}
 }
