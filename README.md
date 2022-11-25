@@ -15,6 +15,7 @@ Go Collections are data structures that make filtering, mapping and general set 
   - [func (c *Collection[T]) Append(item T) Collection[T]](<#func-collectiont-append>)
   - [func (c *Collection[T]) Count() int](<#func-collectiont-count>)
   - [func (c *Collection[T]) Filter(fn func(item T) bool) *Collection[T]](<#func-collectiont-filter>)
+  - [func (c *Collection[T]) Map(fn func(item T) T) *Collection[T]](<#func-collectiont-map>)
   - [func (c *Collection[T]) Pop() T](<#func-collectiont-pop>)
   - [func (c *Collection[T]) Shuffle() T](<#func-collectiont-shuffle>)
 
@@ -33,7 +34,7 @@ type Collection[T any] struct {
 func (c *Collection[T]) All() []T
 ```
 
-Returns the undelying collection slice
+Returns the undelying collection slice.
 
 ### func \(\*Collection\[T\]\) Append
 
@@ -41,7 +42,7 @@ Returns the undelying collection slice
 func (c *Collection[T]) Append(item T) Collection[T]
 ```
 
-Appends item to the end of the collection
+Appends item to the end of the collection.
 
 ### func \(\*Collection\[T\]\) Count
 
@@ -49,7 +50,7 @@ Appends item to the end of the collection
 func (c *Collection[T]) Count() int
 ```
 
-Returns the number of items currently in the collection
+Returns the number of items currently in the collection.
 
 ### func \(\*Collection\[T\]\) Filter
 
@@ -57,7 +58,15 @@ Returns the number of items currently in the collection
 func (c *Collection[T]) Filter(fn func(item T) bool) *Collection[T]
 ```
 
-Allows the filtering of a collection using a defined function The function passed to Filter should accept a value of type T and return a bool if the function returns true, the value will be kept in the collection if the function returns false, the value will be removed
+Allows the filtering of a collection using a defined function. The function passed to Filter should accept a value of type T and return a bool, if the function returns true, the value will be kept in the collection, if the function returns false, the value will be removed.
+
+### func \(\*Collection\[T\]\) Map
+
+```go
+func (c *Collection[T]) Map(fn func(item T) T) *Collection[T]
+```
+
+Allows a collection to be mapped into another using a function. The function provided to Map should accept an item of type T and return an item of type T.
 
 ### func \(\*Collection\[T\]\) Pop
 

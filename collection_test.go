@@ -117,3 +117,19 @@ func TestCanFilterCollection(t *testing.T) {
 		t.Errorf("Failed asserting that collection was filtered correctly. Wanted: %v, Got %v", want, got)
 	}
 }
+
+func TestCanApplyFunctionToEachItemInCollection(t *testing.T) {
+	c := Collection[int]{
+		set: []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+	}
+
+	want := []int{2, 3, 4, 5, 6, 7, 8, 9, 10}
+
+	got := c.Map(func(item int) int {
+		return item + 1
+	}).All()
+
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("Failed asserting that function was applied to each item in collection. Wanted: %v (%T), Got %v (%T)", want, want, got, got)
+	}
+}

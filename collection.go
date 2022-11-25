@@ -5,12 +5,12 @@ type Collection[T any] struct {
 	set []T
 }
 
-// Returns the undelying collection slice
+// Returns the undelying collection slice.
 func (c *Collection[T]) All() []T {
 	return c.set
 }
 
-// Appends item to the end of the collection
+// Appends item to the end of the collection.
 func (c *Collection[T]) Append(item T) Collection[T] {
 	c.set = append(c.set, item)
 	return *c
@@ -32,15 +32,15 @@ func (c *Collection[T]) Shuffle() T {
 	return item
 }
 
-// Returns the number of items currently in the collection
+// Returns the number of items currently in the collection.
 func (c *Collection[T]) Count() int {
 	return len(c.set)
 }
 
-// Allows the filtering of a collection using a defined function
-// The function passed to Filter should accept a value of type T and return a bool
-// if the function returns true, the value will be kept in the collection
-// if the function returns false, the value will be removed
+// Allows the filtering of a collection using a defined function.
+// The function passed to Filter should accept a value of type T and return a bool,
+// if the function returns true, the value will be kept in the collection,
+// if the function returns false, the value will be removed.
 func (c *Collection[T]) Filter(fn func(item T) bool) *Collection[T] {
 	newCollection := &Collection[T]{
 		set: []T{},
@@ -50,6 +50,20 @@ func (c *Collection[T]) Filter(fn func(item T) bool) *Collection[T] {
 		if fn(item) {
 			newCollection.Append(item)
 		}
+	}
+
+	return newCollection
+}
+
+// Allows a collection to be mapped into another using a function.
+// The function provided to Map should accept an item of type T and return an item of type T.
+func (c *Collection[T]) Map(fn func(item T) T) *Collection[T] {
+	newCollection := &Collection[T]{
+		set: []T{},
+	}
+
+	for _, item := range c.set {
+		newCollection.Append(fn(item))
 	}
 
 	return newCollection
