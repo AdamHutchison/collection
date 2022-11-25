@@ -31,6 +31,31 @@ func TestCanAppendItemToCollection(t *testing.T) {
 	got := c.All()[0]
 
 	if want != got {
-		t.Errorf("Want: %v, Got: %v", want, got)
+		t.Errorf("Wanted: %v, Got: %v", want, got)
+	}
+}
+
+func TestCanPopItemFromCollection(t *testing.T) {
+	c := Collection[int] {
+		set: []int {1,2,3,4,5},
+	}
+
+	// Test the poped item is the last value in set
+	want := 5
+	got := c.Pop()
+
+	if want != got {
+		t.Errorf("Wanted: %v, Got: %v", want, got)
+	}
+
+	if len(c.All()) != 4 {
+		t.Errorf("Failed to asserting collection had correct number of items")
+	}
+
+	// Test the item was removed from the collection
+	valueWasRemovedFromCollection := reflect.DeepEqual([]int {1,2,3,4}, c.All())
+
+	if !valueWasRemovedFromCollection {
+		t.Errorf("Failed to assert that the value was removed from the collection")
 	}
 }
