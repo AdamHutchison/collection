@@ -15,6 +15,8 @@ Go Collections are data structures that make filtering, mapping and general set 
   - [func (c *Collection[T]) Append(item T) Collection[T]](<#func-collectiont-append>)
   - [func (c *Collection[T]) Count() int](<#func-collectiont-count>)
   - [func (c *Collection[T]) Filter(fn func(item T) bool) *Collection[T]](<#func-collectiont-filter>)
+  - [func (c *Collection[T]) GetNext() T](<#func-collectiont-getnext>)
+  - [func (c *Collection[T]) HasNext() bool](<#func-collectiont-hasnext>)
   - [func (c *Collection[T]) Map(fn func(item T) T) *Collection[T]](<#func-collectiont-map>)
   - [func (c *Collection[T]) Pop() T](<#func-collectiont-pop>)
   - [func (c *Collection[T]) Shuffle() T](<#func-collectiont-shuffle>)
@@ -59,6 +61,34 @@ func (c *Collection[T]) Filter(fn func(item T) bool) *Collection[T]
 ```
 
 Allows the filtering of a collection using a defined function. The function passed to Filter should accept a value of type T and return a bool, if the function returns true, the value will be kept in the collection, if the function returns false, the value will be removed.
+
+### func \(\*Collection\[T\]\) GetNext
+
+```go
+func (c *Collection[T]) GetNext() T
+```
+
+Used to retrieve the next item to in the iteration sequence. See \[collection.HasNext\] for details.
+
+### func \(\*Collection\[T\]\) HasNext
+
+```go
+func (c *Collection[T]) HasNext() bool
+```
+
+Allows a collection to be iterated over as follows:
+
+```
+c := Collection[int]{
+	set: []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+}
+
+converted := [string]{}
+
+for c.HasNext() {
+	got = append(converted, strconv.Itoa(c.GetNext()))
+}
+```
 
 ### func \(\*Collection\[T\]\) Map
 

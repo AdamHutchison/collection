@@ -2,13 +2,20 @@
 package collection
 
 type Collection[T any] struct {
-	set []T
+	set   []T
+	index int
 }
 
 // Returns the undelying collection slice.
 func (c *Collection[T]) All() []T {
 	return c.set
 }
+
+// first
+// last
+// get(index int)
+// merge(items *Collection[T])
+// has(item T)
 
 // Appends item to the end of the collection.
 func (c *Collection[T]) Append(item T) Collection[T] {
@@ -67,4 +74,34 @@ func (c *Collection[T]) Map(fn func(item T) T) *Collection[T] {
 	}
 
 	return newCollection
+}
+
+// Allows a collection to be iterated over as follows:
+//
+//	c := Collection[int]{
+//		set: []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+//	}
+//
+//	converted := [string]{}
+//
+//	for c.HasNext() {
+//		got = append(converted, strconv.Itoa(c.GetNext()))
+//	}
+func (c *Collection[T]) HasNext() bool {
+	// Check if iteration is finished
+	if c.index >= c.Count() {
+		c.index = 0
+		return false
+	}
+
+	return true
+}
+
+// Used to retrieve the next item to in the iteration sequence.
+// See [collection.HasNext] for details.
+func (c *Collection[T]) GetNext() T {
+	item := c.set[c.index]
+	c.index++
+
+	return item
 }

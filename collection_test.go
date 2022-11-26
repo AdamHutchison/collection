@@ -2,6 +2,7 @@ package collection
 
 import (
 	"reflect"
+	"strconv"
 	"testing"
 )
 
@@ -131,5 +132,42 @@ func TestCanApplyFunctionToEachItemInCollection(t *testing.T) {
 
 	if !reflect.DeepEqual(want, got) {
 		t.Errorf("Failed asserting that function was applied to each item in collection. Wanted: %v (%T), Got %v (%T)", want, want, got, got)
+	}
+}
+
+func TestCollectionIsIterable(t *testing.T) {
+	c := Collection[int]{
+		set: []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+	}
+
+	want := []string{"1", "2", "3", "4", "5", "6", "7", "8", "9"}
+	got := []string{}
+
+	for c.HasNext() {
+		got = append(got, strconv.Itoa(c.GetNext()))
+	}
+
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("Failed asserting that collection was iterated over correctly. Wanted: %v, Got %v", want, got)
+	}
+}
+
+func TestResetsIterationWhenFinished(t *testing.T) {
+	defer func() {
+		if r := recover(); r != nil {
+			t.Errorf("Failed asserting that collection iteration was correctly reset. Error %v", r)
+		}
+	}()
+
+	c := Collection[int]{
+		set: []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+	}
+
+	for c.HasNext() {
+		c.GetNext()
+	}
+
+	for c.HasNext() {
+		c.GetNext()
 	}
 }
