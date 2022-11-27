@@ -171,3 +171,62 @@ func TestResetsIterationWhenFinished(t *testing.T) {
 		c.GetNext()
 	}
 }
+
+func TestHas(t *testing.T) {
+	c := Collection[string]{
+		set: []string{"1", "2", "3", "4", "5", "6", "7", "8", "9"},
+	}
+
+	want := true
+	got := c.Has("4")
+
+	if want != got {
+		t.Errorf("Want: %v, Got: %v", want, got)
+	}
+
+	want = false
+	got = c.Has("13")
+
+	if want != got {
+		t.Errorf("Want: %v, Got: %v", want, got)
+	}
+}
+
+func TestCanGetValueAtIndex(t *testing.T) {
+	c := Collection[string]{
+		set: []string{"1", "2", "3", "4", "5", "6", "7", "8", "9"},
+	}
+
+	want := "5"
+	got := c.Get(4)
+
+	if want != got {
+		t.Errorf("Want: %v, Got: %v", want, got)
+	}
+}
+
+func TestCanGetFirstItemInCollection(t *testing.T) {
+	c := Collection[int]{
+		set: []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+	}
+
+	want := 1
+	got := c.First()
+
+	if want != got {
+		t.Errorf("Want: %v, Got: %v", want, got)
+	}
+}
+
+func TestCanGetLastItemInCollection(t *testing.T) {
+	c := Collection[int]{
+		set: []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+	}
+
+	want := 9
+	got := c.Last()
+
+	if want != got {
+		t.Errorf("Want: %v, Got: %v", want, got)
+	}
+}

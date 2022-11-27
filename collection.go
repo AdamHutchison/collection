@@ -1,6 +1,8 @@
 // Go Collections are data structures that make filtering, mapping and general set iteration a breeze!
 package collection
 
+import "reflect"
+
 type Collection[T any] struct {
 	set   []T
 	index int
@@ -11,16 +13,36 @@ func (c *Collection[T]) All() []T {
 	return c.set
 }
 
-// first
-// last
-// get(index int)
-// merge(items *Collection[T])
-// has(item T)
-
 // Appends item to the end of the collection.
 func (c *Collection[T]) Append(item T) Collection[T] {
 	c.set = append(c.set, item)
 	return *c
+}
+
+// Determines if an element exists in the collection.
+func (c *Collection[T]) Has(item T) bool {
+	for _, setItem := range c.set {
+		if reflect.DeepEqual(setItem, item) {
+			return true
+		}
+	}
+
+	return false
+}
+
+// Returns the value stored at the passed index
+func (c *Collection[T]) Get(index int) T {
+	return c.set[index]
+}
+
+// Returns the first item in the collection
+func (c *Collection[T]) First() T {
+	return c.set[0]
+}
+
+// Returns the last item in the collection
+func (c *Collection[T]) Last() T {
+	return c.set[c.Count()-1]
 }
 
 // Removes the last item in the collection and returns it.
