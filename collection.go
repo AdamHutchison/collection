@@ -135,3 +135,11 @@ func (c *Collection[T]) Merge(c2 Collection[T]) *Collection[T] {
 
 	return c
 }
+
+// Returns a collection containing a slice of the original values.
+// The slice is inclusive of the start and exclusive of the limt.
+func (c *Collection[T]) Slice(start int, limit int) *Collection[T] {
+	c.set = c.set[start:limit]
+
+	return c
+}

@@ -247,3 +247,17 @@ func TestCanMergeInSecondCollection(t *testing.T) {
 		t.Errorf("Failed asserting that second collection was correctly merged. Want: %v, Got: %v", want, got)
 	}
 }
+
+func TestCanSliceCollection(t *testing.T) {
+	c := Collection[int]{
+		set: []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+	}
+
+	want := make([]int, 7)
+	want = append(want, 3, 4, 5, 6, 7)
+	got := c.Slice(2, 7).All()
+
+	if reflect.DeepEqual(want, got) {
+		t.Errorf("Failed asserting that second collection was correctly sliced. Want: %v (%T), Got: %v (%T)", want, want, got, got)
+	}
+}

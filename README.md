@@ -25,6 +25,7 @@ Go Collections are data structures that make filtering, mapping and general set 
   - [func (c *Collection[T]) Merge(c2 Collection[T]) *Collection[T]](<#func-collectiont-merge>)
   - [func (c *Collection[T]) Pop() T](<#func-collectiont-pop>)
   - [func (c *Collection[T]) Shuffle() T](<#func-collectiont-shuffle>)
+  - [func (c *Collection[T]) Slice(start int, limit int) *Collection[T]](<#func-collectiont-slice>)
 
 
 ## type Collection
@@ -158,6 +159,14 @@ func (c *Collection[T]) Shuffle() T
 ```
 
 Removes the first item in the collection and returns it. All othher item indexes are decreased by 1.
+
+### func \(\*Collection\[T\]\) Slice
+
+```go
+func (c *Collection[T]) Slice(start int, limit int) *Collection[T]
+```
+
+Returns a collection containing a slice of the original values. The slice is inclusive of the start and exclusive of the limt.
 
 
 
