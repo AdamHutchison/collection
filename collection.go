@@ -127,3 +127,11 @@ func (c *Collection[T]) GetNext() T {
 
 	return item
 }
+
+// Merges a given collection into the current.
+// The second collection will be appended to the end of the current one.
+func (c *Collection[T]) Merge(c2 Collection[T]) *Collection[T] {
+	c.set = append(c.set, c2.All()...)
+
+	return c
+}

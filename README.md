@@ -22,6 +22,7 @@ Go Collections are data structures that make filtering, mapping and general set 
   - [func (c *Collection[T]) HasNext() bool](<#func-collectiont-hasnext>)
   - [func (c *Collection[T]) Last() T](<#func-collectiont-last>)
   - [func (c *Collection[T]) Map(fn func(item T) T) *Collection[T]](<#func-collectiont-map>)
+  - [func (c *Collection[T]) Merge(c2 Collection[T]) *Collection[T]](<#func-collectiont-merge>)
   - [func (c *Collection[T]) Pop() T](<#func-collectiont-pop>)
   - [func (c *Collection[T]) Shuffle() T](<#func-collectiont-shuffle>)
 
@@ -133,6 +134,14 @@ func (c *Collection[T]) Map(fn func(item T) T) *Collection[T]
 ```
 
 Allows a collection to be mapped into another using a function. The function provided to Map should accept an item of type T and return an item of type T.
+
+### func \(\*Collection\[T\]\) Merge
+
+```go
+func (c *Collection[T]) Merge(c2 Collection[T]) *Collection[T]
+```
+
+Merges a given collection into the current. The second collection will be appended to the end of the current one.
 
 ### func \(\*Collection\[T\]\) Pop
 

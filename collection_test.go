@@ -230,3 +230,20 @@ func TestCanGetLastItemInCollection(t *testing.T) {
 		t.Errorf("Want: %v, Got: %v", want, got)
 	}
 }
+
+func TestCanMergeInSecondCollection(t *testing.T) {
+	c := Collection[int]{
+		set: []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+	}
+
+	c2 := Collection[int]{
+		set: []int{10, 11, 12, 13, 14},
+	}
+
+	want := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
+	got := c.Merge(c2)
+
+	if reflect.DeepEqual(want, got) {
+		t.Errorf("Failed asserting that second collection was correctly merged. Want: %v, Got: %v", want, got)
+	}
+}
