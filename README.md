@@ -211,7 +211,7 @@ sorted := c.Sort(func(item1 string, item2 string) bool {
 }).All()
 ```
 
-In the above scenario, sorted would equeal:
+In the above scenario, sorted would equal:
 
 ```
 []string{
