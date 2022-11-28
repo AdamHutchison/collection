@@ -143,3 +143,85 @@ func (c *Collection[T]) Slice(start int, limit int) *Collection[T] {
 
 	return c
 }
+
+// Allows a collection to be sorted using a defined function.
+// The function passed to Sort is used to determine how the collection should be sorted
+// The function accepts two items from the collection that can be compared to dictate the sorting order.
+//
+// Sorting in accending order:
+// If you wish to sort the collection in accending order then the function should
+// return true if item1 should be placed lower than item2 e.g.
+//
+//	c := Collection[int]{
+//			set: []int{5, 2, 4, 3, 9, 1, 7, 8, 6},
+//		}
+//
+//		sorted := c.Sort(func(item1 int, item2 int) bool {
+//			return item1 < item2
+//		}).All()
+//
+// In the above example sorted would equal []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+//
+// Sorting in decending order:
+// If you wish to sort the collection in decending order then the function should
+// return true if item1 should be placed higher than item2 e.g.
+//
+//	c := Collection[string]{
+//		set: []string{
+//			"AAAAAAA",
+//			"AAAAA",
+//			"A",
+//			"AA",
+//			"AAAA",
+//			"AAA",
+//			"AAAAAA",
+//		},
+//	 }
+//
+//	sorted := c.Sort(func(item1 string, item2 string) bool {
+//		return len(item1) > len(item2)
+//	}).All()
+//
+// In the above scenario, sorted would equeal:
+//
+//	[]string{
+//		"AAAAAAA",
+//		"AAAAAA",
+//		"AAAAA",
+//		"AAAA",
+//		"AAA",
+//		"AA",
+//		"A",
+//	}
+func (c *Collection[T]) Sort(fn func(item1 T, item2 T) bool) *Collection[T] {
+	c.set = sortSlice(c.set, fn)
+
+	return c
+}
+
+func sortSlice[T any](items []T, fn func(item1 T, item2 T) bool) []T {
+	// Check if sorting is required
+	if len(items) < 2 {
+		return items
+	}
+
+	pivot := items[0]
+
+	lowerSlice, upperSlice := partitionSlice(pivot, items[1:], fn)
+
+	sortedItems := append(sortSlice(lowerSlice, fn), pivot)
+
+	return append(sortedItems, sortSlice(upperSlice, fn)...)
+}
+
+func partitionSlice[T any](pivot T, items []T, fn func(item1 T, item2 T) bool) (lowerSlice []T, upperSlice []T) {
+	for _, item := range items {
+		if fn(pivot, item) {
+			upperSlice = append(upperSlice, item)
+		} else {
+			lowerSlice = append(lowerSlice, item)
+		}
+	}
+
+	return
+}

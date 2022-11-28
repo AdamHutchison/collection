@@ -261,3 +261,79 @@ func TestCanSliceCollection(t *testing.T) {
 		t.Errorf("Failed asserting that second collection was correctly sliced. Want: %v (%T), Got: %v (%T)", want, want, got, got)
 	}
 }
+
+func TestCanSortIntegersUsingAFunction(t *testing.T) {
+	c := Collection[int]{
+		set: []int{5, 2, 4, 3, 9, 1, 7, 8, 6},
+	}
+
+	want := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+	got := c.Sort(func(item1 int, item2 int) bool {
+		return item1 < item2
+	}).All()
+
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("Want: %v, Got: %v", want, got)
+	}
+}
+
+func TestCanSortIntegersDescUsingAFunction(t *testing.T) {
+	c := Collection[int]{
+		set: []int{5, 2, 4, 3, 9, 1, 7, 8, 6},
+	}
+
+	want := []int{9, 8, 7, 6, 5, 4, 3, 2, 1}
+
+	got := c.Sort(func(item1 int, item2 int) bool {
+		return item1 > item2
+	}).All()
+
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("Want: %v, Got: %v", want, got)
+	}
+}
+
+func TestSortHandlesEmptySlice(t *testing.T) {
+	c := Collection[int]{}
+
+	got := c.Sort(func(item1 int, item2 int) bool {
+		return item1 > item2
+	})
+
+	if got.Count() != 0 {
+		t.Errorf("Failed asserting that sorting an empty collection was handled correctly")
+	}
+}
+
+func TestCanSortStringsUsingFunction(t *testing.T) {
+	c := Collection[string]{
+		set: []string{
+			"AAAAAAA",
+			"AAAAA",
+			"A",
+			"AA",
+			"AAAA",
+			"AAA",
+			"AAAAAA",
+		},
+	}
+
+	want := []string{
+		"A",
+		"AA",
+		"AAA",
+		"AAAA",
+		"AAAAA",
+		"AAAAAA",
+		"AAAAAAA",
+	}
+
+	got := c.Sort(func(item1 string, item2 string) bool {
+		return len(item1) < len(item2)
+	}).All()
+
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("Want: %v, Got: %v", want, got)
+	}
+}
