@@ -182,7 +182,7 @@ func (c *Collection[T]) Slice(start int, limit int) *Collection[T] {
 //		return len(item1) > len(item2)
 //	}).All()
 //
-// In the above scenario, sorted would equeal:
+// In the above scenario, sorted would equal:
 //
 //	[]string{
 //		"AAAAAAA",
