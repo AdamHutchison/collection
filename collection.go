@@ -8,7 +8,7 @@ type Collection[T any] struct {
 	index int
 }
 
-// Returns the undelying collection slice.
+// Returns the underlying collection slice.
 func (c *Collection[T]) All() []T {
 	return c.set
 }
@@ -53,7 +53,7 @@ func (c *Collection[T]) Pop() T {
 	return item
 }
 
-// Removes the first item in the collection and returns it. All othher item indexes are decreased by 1.
+// Removes the first item in the collection and returns it. All other item indexes are decreased by 1.
 func (c *Collection[T]) Shuffle() T {
 	item := c.set[0]
 	c.set = c.set[1:len(c.set)]
@@ -119,7 +119,7 @@ func (c *Collection[T]) HasNext() bool {
 	return true
 }
 
-// Used to retrieve the next item to in the iteration sequence.
+// Used to retrieve the next item in the iteration sequence.
 // See [collection.HasNext] for details.
 func (c *Collection[T]) GetNext() T {
 	item := c.set[c.index]
@@ -137,7 +137,7 @@ func (c *Collection[T]) Merge(c2 Collection[T]) *Collection[T] {
 }
 
 // Returns a collection containing a slice of the original values.
-// The slice is inclusive of the start and exclusive of the limt.
+// The slice is inclusive of the start and exclusive of the limit.
 func (c *Collection[T]) Slice(start int, limit int) *Collection[T] {
 	c.set = c.set[start:limit]
 
@@ -148,8 +148,8 @@ func (c *Collection[T]) Slice(start int, limit int) *Collection[T] {
 // The function passed to Sort is used to determine how the collection should be sorted
 // The function accepts two items from the collection that can be compared to dictate the sorting order.
 //
-// Sorting in accending order:
-// If you wish to sort the collection in accending order then the function should
+// Sorting in ascending order:
+// If you wish to sort the collection in ascending order then the function should
 // return true if item1 should be placed lower than item2 e.g.
 //
 //	c := Collection[int]{
@@ -162,8 +162,8 @@ func (c *Collection[T]) Slice(start int, limit int) *Collection[T] {
 //
 // In the above example sorted would equal []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
 //
-// Sorting in decending order:
-// If you wish to sort the collection in decending order then the function should
+// Sorting in descending order:
+// If you wish to sort the collection in descending order then the function should
 // return true if item1 should be placed higher than item2 e.g.
 //
 //	c := Collection[string]{

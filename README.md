@@ -43,7 +43,7 @@ type Collection[T any] struct {
 func (c *Collection[T]) All() []T
 ```
 
-Returns the undelying collection slice.
+Returns the underlying collection slice.
 
 ### func \(\*Collection\[T\]\) Append
 
@@ -91,7 +91,7 @@ Returns the value stored at the passed index
 func (c *Collection[T]) GetNext() T
 ```
 
-Used to retrieve the next item to in the iteration sequence. See \[collection.HasNext\] for details.
+Used to retrieve the next item in the iteration sequence. See \[collection.HasNext\] for details.
 
 ### func \(\*Collection\[T\]\) Has
 
@@ -159,7 +159,7 @@ Removes the last item in the collection and returns it.
 func (c *Collection[T]) Shuffle() T
 ```
 
-Removes the first item in the collection and returns it. All othher item indexes are decreased by 1.
+Removes the first item in the collection and returns it. All other item indexes are decreased by 1.
 
 ### func \(\*Collection\[T\]\) Slice
 
@@ -167,7 +167,7 @@ Removes the first item in the collection and returns it. All othher item indexes
 func (c *Collection[T]) Slice(start int, limit int) *Collection[T]
 ```
 
-Returns a collection containing a slice of the original values. The slice is inclusive of the start and exclusive of the limt.
+Returns a collection containing a slice of the original values. The slice is inclusive of the start and exclusive of the limit.
 
 ### func \(\*Collection\[T\]\) Sort
 
@@ -177,7 +177,7 @@ func (c *Collection[T]) Sort(fn func(item1 T, item2 T) bool) *Collection[T]
 
 Allows a collection to be sorted using a defined function. The function passed to Sort is used to determine how the collection should be sorted The function accepts two items from the collection that can be compared to dictate the sorting order.
 
-Sorting in accending order: If you wish to sort the collection in accending order then the function should return true if item1 should be placed lower than item2 e.g.
+Sorting in ascending order: If you wish to sort the collection in ascending order then the function should return true if item1 should be placed lower than item2 e.g.
 
 ```
 c := Collection[int]{
@@ -191,7 +191,7 @@ c := Collection[int]{
 
 In the above example sorted would equal \[\]int\{1, 2, 3, 4, 5, 6, 7, 8, 9\}
 
-Sorting in decending order: If you wish to sort the collection in decending order then the function should return true if item1 should be placed higher than item2 e.g.
+Sorting in descending order: If you wish to sort the collection in descending order then the function should return true if item1 should be placed higher than item2 e.g.
 
 ```
 c := Collection[string]{
