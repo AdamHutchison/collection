@@ -10,13 +10,13 @@ type Collection[T any] struct {
 
 // Returns the underlying collection slice.
 func (c *Collection[T]) All() []T {
-	return c.set
+	return c.getSetCopy()
 }
 
 // Appends item to the end of the collection.
-func (c *Collection[T]) Append(item T) Collection[T] {
-	c.set = append(c.set, item)
-	return *c
+func (c *Collection[T]) Append(item T) *Collection[T] {
+	newSet := append(c.set, item)
+	return makeCollection(newSet)
 }
 
 // Determines if an element exists in the collection.
@@ -46,19 +46,19 @@ func (c *Collection[T]) Last() T {
 }
 
 // Removes the last item in the collection and returns it.
-func (c *Collection[T]) Pop() T {
+func (c *Collection[T]) Pop() (*Collection[T], T) {
 	item := c.set[len(c.set)-1]
-	c.set = c.set[:len(c.set)-1]
+	newSet := c.set[:len(c.set)-1]
 
-	return item
+	return makeCollection(newSet), item 
 }
 
 // Removes the first item in the collection and returns it. All other item indexes are decreased by 1.
-func (c *Collection[T]) Shuffle() T {
+func (c *Collection[T]) Shuffle() (*Collection[T], T) {
 	item := c.set[0]
-	c.set = c.set[1:len(c.set)]
+	newSet := c.set[1:len(c.set)]
 
-	return item
+	return makeCollection(newSet), item
 }
 
 // Returns the number of items currently in the collection.
@@ -71,31 +71,27 @@ func (c *Collection[T]) Count() int {
 // if the function returns true, the value will be kept in the collection,
 // if the function returns false, the value will be removed.
 func (c *Collection[T]) Filter(fn func(item T) bool) *Collection[T] {
-	newCollection := &Collection[T]{
-		set: []T{},
-	}
+	filteredItems := []T{}
 
 	for _, item := range c.set {
 		if fn(item) {
-			newCollection.Append(item)
+			filteredItems = append(filteredItems, item)
 		}
 	}
 
-	return newCollection
+	return makeCollection(filteredItems)
 }
 
 // Allows a collection to be mapped into another using a function.
 // The function provided to Map should accept an item of type T and return an item of type T.
 func (c *Collection[T]) Map(fn func(item T) T) *Collection[T] {
-	newCollection := &Collection[T]{
-		set: []T{},
-	}
+	mappedItems := []T{}
 
 	for _, item := range c.set {
-		newCollection.Append(fn(item))
+			mappedItems = append(mappedItems, fn(item))
 	}
 
-	return newCollection
+	return makeCollection(mappedItems)
 }
 
 // Allows a collection to be iterated over as follows:
@@ -131,17 +127,18 @@ func (c *Collection[T]) GetNext() T {
 // Merges a given collection into the current.
 // The second collection will be appended to the end of the current one.
 func (c *Collection[T]) Merge(c2 Collection[T]) *Collection[T] {
-	c.set = append(c.set, c2.All()...)
+	newSet := append(c.set, c2.All()...)
 
-	return c
+	return makeCollection(newSet)
 }
 
 // Returns a collection containing a slice of the original values.
 // The slice is inclusive of the start and exclusive of the limit.
 func (c *Collection[T]) Slice(start int, limit int) *Collection[T] {
-	c.set = c.set[start:limit]
+	set := c.getSetCopy()
+	newSet := set[start:limit]
 
-	return c
+	return makeCollection(newSet)
 }
 
 // Allows a collection to be sorted using a defined function.
@@ -194,9 +191,18 @@ func (c *Collection[T]) Slice(start int, limit int) *Collection[T] {
 //		"A",
 //	}
 func (c *Collection[T]) Sort(fn func(item1 T, item2 T) bool) *Collection[T] {
-	c.set = sortSlice(c.set, fn)
+	set := c.getSetCopy()
+	set = sortSlice(set, fn)
 
-	return c
+	return makeCollection(set)
+}
+
+func (c *Collection[T]) getSetCopy() []T {
+	copySlice := make([]T, len(c.set))
+
+	copy(copySlice, c.set)
+
+	return copySlice
 }
 
 func sortSlice[T any](items []T, fn func(item1 T, item2 T) bool) []T {
@@ -224,4 +230,10 @@ func partitionSlice[T any](pivot T, items []T, fn func(item1 T, item2 T) bool) (
 	}
 
 	return
+}
+
+func makeCollection[T any](set []T) *Collection[T] {
+	return &Collection[T]{
+		set: set,
+	}
 }

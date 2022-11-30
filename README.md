@@ -12,7 +12,7 @@ Go Collections are data structures that make filtering, mapping and general set 
 
 - [type Collection](<#type-collection>)
   - [func (c *Collection[T]) All() []T](<#func-collectiont-all>)
-  - [func (c *Collection[T]) Append(item T) Collection[T]](<#func-collectiont-append>)
+  - [func (c *Collection[T]) Append(item T) *Collection[T]](<#func-collectiont-append>)
   - [func (c *Collection[T]) Count() int](<#func-collectiont-count>)
   - [func (c *Collection[T]) Filter(fn func(item T) bool) *Collection[T]](<#func-collectiont-filter>)
   - [func (c *Collection[T]) First() T](<#func-collectiont-first>)
@@ -23,8 +23,8 @@ Go Collections are data structures that make filtering, mapping and general set 
   - [func (c *Collection[T]) Last() T](<#func-collectiont-last>)
   - [func (c *Collection[T]) Map(fn func(item T) T) *Collection[T]](<#func-collectiont-map>)
   - [func (c *Collection[T]) Merge(c2 Collection[T]) *Collection[T]](<#func-collectiont-merge>)
-  - [func (c *Collection[T]) Pop() T](<#func-collectiont-pop>)
-  - [func (c *Collection[T]) Shuffle() T](<#func-collectiont-shuffle>)
+  - [func (c *Collection[T]) Pop() (*Collection[T], T)](<#func-collectiont-pop>)
+  - [func (c *Collection[T]) Shuffle() (*Collection[T], T)](<#func-collectiont-shuffle>)
   - [func (c *Collection[T]) Slice(start int, limit int) *Collection[T]](<#func-collectiont-slice>)
   - [func (c *Collection[T]) Sort(fn func(item1 T, item2 T) bool) *Collection[T]](<#func-collectiont-sort>)
 
@@ -48,7 +48,7 @@ Returns the underlying collection slice.
 ### func \(\*Collection\[T\]\) Append
 
 ```go
-func (c *Collection[T]) Append(item T) Collection[T]
+func (c *Collection[T]) Append(item T) *Collection[T]
 ```
 
 Appends item to the end of the collection.
@@ -148,7 +148,7 @@ Merges a given collection into the current. The second collection will be append
 ### func \(\*Collection\[T\]\) Pop
 
 ```go
-func (c *Collection[T]) Pop() T
+func (c *Collection[T]) Pop() (*Collection[T], T)
 ```
 
 Removes the last item in the collection and returns it.
@@ -156,7 +156,7 @@ Removes the last item in the collection and returns it.
 ### func \(\*Collection\[T\]\) Shuffle
 
 ```go
-func (c *Collection[T]) Shuffle() T
+func (c *Collection[T]) Shuffle() (*Collection[T], T)
 ```
 
 Removes the first item in the collection and returns it. All other item indexes are decreased by 1.
